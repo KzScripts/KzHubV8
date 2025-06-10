@@ -3,8 +3,8 @@ local redzlib = loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao1
 
 --window
 local Window = redzlib:MakeWindow({
-  Title = "Lobão Hub : Universal",
-  SubTitle = "by LobãoScripts",
+  Title = "Kz Hub : Universal",
+  SubTitle = "by kzscripts",
   SaveFolder = "testando | redz lib v5.lua"
 })
 
@@ -23,24 +23,6 @@ Tab1:AddDiscordInvite({
 })
 
 local TabMain = Window:MakeTab({"Main", "layers"})
-
--- Infinite Jump
-TabMain:AddButton({
-    Name = "Infinite Jump",
-    Callback = function()
-        game:GetService("UserInputService").JumpRequest:Connect(function()
-            game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
-        end)
-    end
-})
-
--- Fly (simples)
-TabMain:AddButton({
-    Name = "Fly",
-    Callback = function()
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Gui-Fly-v3-37111"))()
-    end
-})
 
 -- Toggle ESP
 local ESPEnabled = false
@@ -96,29 +78,6 @@ TabMain:AddDropdown({
                 char.KZ_ESP.FillColor = cores[color] or Color3.fromRGB(255, 0, 0)
             end
         end
-    end
-})
-
-
-TabMain:AddSlider({
-    Name = "Speed",
-    Min = 1,
-    Max = 350,
-    Increase = 1,
-    Default = 16,
-    Callback = function(Value)
-        local player = game.Players.LocalPlayer
-        local char = player.Character or player.CharacterAdded:Wait()
-        local hum = char:FindFirstChild("Humanoid")
-        if hum then
-            hum.WalkSpeed = Value
-        end
-
-        -- Reaplica ao morrer
-        game.Players.LocalPlayer.CharacterAdded:Connect(function(newChar)
-            local newHum = newChar:WaitForChild("Humanoid")
-            newHum.WalkSpeed = Value
-        end)
     end
 })
 
@@ -196,6 +155,24 @@ TabMain:AddToggle({
 
 local TabPlayer = Window:MakeTab({"Player", "user"})
 
+-- Infinite Jump
+TabPlayer:AddButton({
+    Name = "Infinite Jump",
+    Callback = function()
+        game:GetService("UserInputService").JumpRequest:Connect(function()
+            game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+        end)
+    end
+})
+
+-- Fly (simples)
+TabPlayer:AddButton({
+    Name = "Fly",
+    Callback = function()
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Gui-Fly-v3-37111"))()
+    end
+})
+
 TabPlayer:AddSlider({
     Name = "JumpPower",
     Min = 1,
@@ -228,6 +205,54 @@ TabPlayer:AddSlider({
         getgenv().DashLength = Value
     end
 })
+TabPlayer:AddSlider({
+    Name = "Speed",
+    Min = 1,
+    Max = 350,
+    Increase = 1,
+    Default = 16,
+    Callback = function(Value)
+        local player = game.Players.LocalPlayer
+        local char = player.Character or player.CharacterAdded:Wait()
+        local hum = char:FindFirstChild("Humanoid")
+        if hum then
+            hum.WalkSpeed = Value
+        end
+
+        -- Reaplica ao morrer
+        game.Players.LocalPlayer.CharacterAdded:Connect(function(newChar)
+            local newHum = newChar:WaitForChild("Humanoid")
+            newHum.WalkSpeed = Value
+        end)
+    end
+})
+
+
+
+TabPlayer:AddToggle({
+    Name = "Invisibilidade",
+    Flag = "InvisToggle",
+    Default = false,
+    Callback = function(state)
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+
+        if not character then return end
+
+        for _, part in ipairs(character:GetDescendants()) do
+            if part:IsA("BasePart") or part:IsA("Decal") then
+                part.Transparency = state and 1 or 0
+            elseif part:IsA("Accessory") then
+                local handle = part:FindFirstChild("Handle")
+                if handle then
+                    handle.Transparency = state and 1 or 0
+                end
+            end
+        end
+    end
+})
+
+local TabSettings = Window:MakeTab({"Settings", "settings"})
 
 local noclipActive = false
 local noclipConnection
@@ -260,32 +285,6 @@ TabPlayer:AddToggle({
         end)
     end
 })
-
-TabPlayer:AddToggle({
-    Name = "Invisibilidade",
-    Flag = "InvisToggle",
-    Default = false,
-    Callback = function(state)
-        local player = game.Players.LocalPlayer
-        local character = player.Character or player.CharacterAdded:Wait()
-
-        if not character then return end
-
-        for _, part in ipairs(character:GetDescendants()) do
-            if part:IsA("BasePart") or part:IsA("Decal") then
-                part.Transparency = state and 1 or 0
-            elseif part:IsA("Accessory") then
-                local handle = part:FindFirstChild("Handle")
-                if handle then
-                    handle.Transparency = state and 1 or 0
-                end
-            end
-        end
-    end
-})
-
-local TabSettings = Window:MakeTab({"Settings", "settings"})
-
 
 -- Anti-AFK
 local AntiAfkConnection
@@ -374,7 +373,7 @@ TabSettings:AddToggle({
 })
 
 
-local TabScripts = Window:MakeTab({"Scripts", "layers"})
+local TabScripts = Window:MakeTab({"Scripts", "shop"})
 
 --BloxFruits
 TabScripts:AddButton({
@@ -405,12 +404,10 @@ TabScripts:AddButton({
     end
 })
 
-
-local TabCreditos = Window:MakeTab({"Creditos", "leaf"})
-
-TabCreditos:AddButton({
-    Name = "Canal no YouTube",
-    Description = "Clique aqui para se inscrever",
-    imagem = "rbxassetid://116773264174660", -- Ícone opcional
+--arise crossover
+TabScripts:AddButton({
+    Name = "AriseCrossover",
     Callback = function()
-        setclipboard("https://www.youtube.com/@KzScripts") -- Substitua pelo link do seu canal
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/JustLevel/goombahub/main/AriseCrossover.lua"))()
+    end
+    
